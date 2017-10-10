@@ -1,38 +1,31 @@
-package main
+package elearningapi
 
 import (
 	log "github.com/cihub/seelog"
-	"gopkg.in/ini.v1"
 )
 
-func main() {
-	initLogger()
-	defer log.Flush()
-	port := initConfig()
+// IsDeubg weather to show the log
+var IsDeubg bool
 
+func init() {
+	if IsDeubg {
+		initLogger()
+		defer log.Flush()
+	}
 }
 
 func initLogger() {
-	logger, err := log.LoggerFromConfigAsFile("config/seelog.xml")
+	config := `<seelog minlevel="debug">
+	<outputs>
+	<console formatid="colored"/>
+</outputs>
+<formats>
+	<format id="colored"  format="%EscM(46)[%Level]%EscM(49) %Msg%n%EscM(0)"/>
+</formats>
+</seelog>`
+	logger, err := log.LoggerFromConfigAsString(config)
 	if err != nil {
 		panic(err)
 	}
 	log.ReplaceLogger(logger)
-}
-
-func initConfig() string {
-	iniCongig, err := ini.Load("config/api.ini")
-	if err != nil {
-		panic(err)
-	}
-	if sec, err := iniCongig.GetSection("server"); err == nil {
-		if sec.Haskey("port") {
-			port, _ := sec.GetKey("port")
-			return port.String()
-		}
-	} else {
-		panic(err)
-	}
-
-	return ""
 }
