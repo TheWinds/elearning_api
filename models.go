@@ -1,4 +1,4 @@
-package main
+package elearningapi
 
 import (
 	"time"
@@ -6,20 +6,20 @@ import (
 
 // Account user account
 type Account struct {
-	ID        string
-	Name      string
-	SessionID string
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	SessionID string `json:"session_id"`
 }
 
 // Course user course
 type Course struct {
-	ID         string
-	Name       string
-	SchoolYear int
-	Semester   int
+	ID         string `json:"id"`
+	Name       string `json:"name"`
+	SchoolYear int    `json:"school_year"`
+	Semester   int    `json:"semester"`
 	// course pages e.g. homework,notice ...
 	// page title -> page id
-	Pages map[string]string
+	Pages map[string]string `json:"pages"`
 }
 
 // GetPageID get couse page id by page title return (id,has)
@@ -33,8 +33,8 @@ func (course *Course) GetPageID(pageTile string) (string, bool) {
 
 // CourseList course list which user subscribe
 type CourseList struct {
-	UserID  string
-	Courses []*Course
+	UserID  string    `json:"user_id"`
+	Courses []*Course `json:"courses"`
 }
 
 // Add add course to course list
@@ -70,9 +70,9 @@ const (
 
 // HomeWrok user's home work
 type HomeWrok struct {
-	Title         string
-	Status        HomeWrokStatus
-	StatusMessage string
-	StartTime     time.Time
-	DueTime       time.Time
+	Title         string         `json:"title"`
+	Status        HomeWrokStatus `json:"home_status"`
+	StatusMessage string         `json:"status_message"`
+	StartTime     time.Time      `json:"start_time"`
+	DueTime       time.Time      `json:"due_time"`
 }
